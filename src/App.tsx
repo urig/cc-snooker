@@ -11,6 +11,7 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
   const [score, setScore] = useState<Score>(new Score(0, 0));
+  const [showModal, setShowModal] = useState(false);
 
   const startGame = () => {
     if (player1Name && player2Name) {
@@ -31,7 +32,12 @@ function App() {
     setScore(snooker.getScore());
   };
 
-  const endGame = () => {
+  const quitGame = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
     setGameStarted(false);
     setPlayer1Name('');
     setPlayer2Name('');
@@ -90,10 +96,21 @@ function App() {
           <button onClick={() => handleSink(Sink.PINK)}><span className="pink-ball">🔴</span> Pink (6)</button>
           <button onClick={() => handleSink(Sink.BLACK)}>⚫ Black (7)</button>
         </div>
-        <button onClick={endGame}>Restart Game</button>
+        <button onClick={quitGame}>Quit</button>
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Final Score</h2>
+            <p>{player1Name}: {score.player1Score} points</p>
+            <p>{player2Name}: {score.player2Score} points</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default App; 
+export default App;
